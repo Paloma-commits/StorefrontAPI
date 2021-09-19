@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { User, userStore } from '../models/user';
+import dotenv from 'dotenv'
 //import client from '/../database';
 
 //creating an instance of the class
@@ -10,8 +11,8 @@ const index = async (_req: Request, res: Response) => {
     const users = await user_store.index();
     res.json(users);
   } catch (err) {
-    res.status(400);
-    res.json(err);
+    res.status(400)
+    res.json(err)
   }
 };
 
@@ -21,29 +22,36 @@ const show = async (_req: Request, res: Response) => {
   try {
     const showed_user = await user_store.show(show_id);
     res.json(showed_user);
+
   } catch (err) {
-    res.status(400);
-    res.json(err);
+    res.status(400)
+    res.json(err)
+
   }
 };
 
 const create = async (_req: Request, res: Response) => {
-  const firstname: string = _req.body.title;
-  const lastname: string = _req.body.lastname;
-  const password: string = _req.body.password;
+  const user: User = {
+    id: parseInt(_req.params.id),
+    firstname: _req.body.title,
+    lastname: _req.body.lastname,
+    password: _req.body.password,
+  };
 
   try {
-    const new_user = await user_store.create(firstname, lastname, password);
+    const new_user = await user_store.create(user);
     res.json(new_user);
+
   } catch (err) {
-    res.status(400);
-    res.json(err);
+    res.status(400)
+    res.json(err)
   }
+
 };
 
 const user_routes = (app: express.Application) => {
   app.get('/users', index),
-    app.get('/users/:id', show),
+  app.get('/users/:id', show),
     app.post('/users', create);
 };
 

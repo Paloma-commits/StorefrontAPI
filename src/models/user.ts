@@ -1,7 +1,17 @@
 import client from '../database';
-//import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const { BCRYPT_PASSWORD, SALT_ROUNDS } = process.env;
+
+const pepper= BCRYPT_PASSWORD;
+const saltRounds = SALT_ROUNDS;
+
 
 export type User = {
+  id: number,
   firstname: string;
   lastname: string;
   password: string;
@@ -37,23 +47,25 @@ export class userStore {
     }
   }
 
-  async create(
-    firstname: string,
-    lastname: string,
-    password: string
-  ): Promise<User[]> {
+  async create(u: User): Promise<User> {
     try {
       const conn = await client.connect();
 
       const sql =
         'INSERT INTO users (firstname, lastname, password) VALUES ($1, $2, $3)';
-      const result = await conn.query(sql, [firstname, lastname, password]);
 
-      const u = result.rows[0];
+        const hash = bcrypt.hashSync(
+          u.password + pepper, 
+          parseInt(saltRounds)
+       );
+      const result = await conn.query(sql, [u.id, hash]);
+
+      const user = result.rows[0];
       conn.release();
-      return u;
+      return user;
+
     } catch (err) {
-      throw new Error(`Unable to add user: ${firstname}, ${lastname} ${err}`);
+      throw new Error(`Unable to add user: ${u} ${err}`);
     }
   }
 }
