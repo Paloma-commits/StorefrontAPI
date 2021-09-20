@@ -7,13 +7,13 @@ These are the notes from a meeting with the frontend developer that describe wha
 #### Products
 - Index:  '/products' - GET
 - Show:    '/products/:id' - GET
-- Create [token required]:  '/products/create/:id' - POST
+- Create [token required]:  '/products' - POST
 
 
 #### Users
 - Index [token required]:   '/users' - GET
 - Show [token required]:    '/users/:id' - GET
-- Create N[token required]: '/users/create/:id' - POST
+- Create N[token required]: '/users' - POST
 
 #### Orders
 - Current Order by user (args: user id)[token required]:    '/orders/user/:id' - GET

@@ -1,15 +1,11 @@
 import client from '../database';
 import bcrypt from 'bcrypt';
-import dotenv from 'dotenv';
 
-dotenv.config();
-
-const pepper= process.env.BCRYPT_PASSWORD;
-const saltRounds = process.env.SALT_ROUNDS;
-
+const pepper = process.env.BCRYPT_PASSWORD!;
+const saltRounds = process.env.SALT_ROUNDS!;
 
 export type User = {
-  id: number,
+  id: number;
   firstname: string;
   lastname: string;
   password: string;
@@ -52,41 +48,35 @@ export class userStore {
       const sql =
         'INSERT INTO users (firstname, lastname, password) VALUES ($1, $2, $3)';
 
-        const hash = bcrypt.hashSync(
-          u.password + pepper, 
-          parseInt(saltRounds)
-       );
+      const hash = bcrypt.hashSync(u.password + pepper, parseInt(saltRounds));
       const result = await conn.query(sql, [u.id, hash]);
 
       const user = result.rows[0];
       conn.release();
       return user;
-
     } catch (err) {
       throw new Error(`Unable to add user: ${u} ${err}`);
     }
   }
 
-  async authenticate(id: number, password: string): Promise <User | null > {
+  async authenticate(id: number, password: string): Promise<User | null> {
     const conn = await client.connect();
-    
+
     const sql = 'SELECT password_digest FROM users WHERE username = ($1)';
 
-    const result = await conn.query(sql, [id])
+    const result = await conn.query(sql, [id]);
 
     console.log(password + pepper);
 
-    if(result.rows.length) {
-      const user = result.rows[0]
-      console.log(user)
+    if (result.rows.length) {
+      const user = result.rows[0];
+      console.log(user);
 
-      if(bcrypt.compareSync(password+pepper, user.password_digest)) {
-        return user
+      if (bcrypt.compareSync(password + pepper, user.password_digest)) {
+        return user;
       }
     }
 
-    return null
-
+    return null;
   }
-
 }
