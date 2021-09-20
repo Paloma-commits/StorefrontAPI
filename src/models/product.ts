@@ -23,7 +23,7 @@ export class productStore {
     }
   }
 
-  async show(id: string): Promise<Product[]> {
+  async show(id: string): Promise<Product> {
     try {
       const sql = 'SELECT * FROM products WHERE id=($1)';
       // @ts-ignore
@@ -39,22 +39,22 @@ export class productStore {
     }
   }
 
-  async create(name: string, price: string): Promise<Product> {
+  async create(product: Product): Promise<Product> {
     try {
       const sql =
         'INSERT INTO products (name, price) VALUES($1, $2) RETURNING *';
 
       const conn = await client.connect();
 
-      const result = await conn.query(sql, [name, price]);
+      const result = await conn.query(sql, [product.name, product.price]);
 
-      const book = result.rows[0];
+      const new_prod = result.rows[0];
 
       conn.release();
 
-      return book;
+      return new_prod;
     } catch (err) {
-      throw new Error(`Could not add new ${name}, error: ${err}`);
+      throw new Error(`Could not add new ${product.name}, error: ${err}`);
     }
   }
 }
