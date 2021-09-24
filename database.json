@@ -1,16 +1,16 @@
 {
     "dev": {
       "driver": "pg",
-      "host": "24.60.31.12",
+      "host": "127.0.0.1",
       "database": "storefront",
       "user": "full_stack_user",
       "password": "password123"
     },
     "test": {
       "driver": "pg",
-      "host": "24.60.31.12",
-      "database": "fantasy_worlds_test",
-      "user": "test_user",
+      "host": "127.0.0.1",
+      "database": "storefront_test",
+      "user": "full_stack_user",
       "password": "password123"
     }
 }

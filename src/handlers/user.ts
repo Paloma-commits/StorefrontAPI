@@ -2,7 +2,6 @@ import express, { Request, Response } from 'express';
 import { User, userStore } from '../models/user';
 import jwt from 'jsonwebtoken';
 
-
 //creating an instance of the class
 const user_store = new userStore();
 
@@ -31,6 +30,7 @@ const show = async (req: Request, res: Response) => {
 const create = async (req: Request, res: Response) => {
   const user: User = {
     id: parseInt(req.params.id),
+    username: req.body.username,
     firstname: req.body.title,
     lastname: req.body.lastname,
     password: req.body.password,
@@ -48,12 +48,13 @@ const create = async (req: Request, res: Response) => {
 const authenticate = async (req: Request, res: Response) => {
   const user: User = {
     id: req.body.id,
+    username: req.body.username,
     firstname: req.body.firstname,
     lastname: req.body.lastname,
     password: req.body.password,
   };
   try {
-    const u = await user_store.authenticate(user.id, user.password);
+    const u = await user_store.authenticate(user.username, user.password);
     var token = jwt.sign({ user: u }, process.env.TOKEN_SECRET!);
     res.json(token);
   } catch (error) {
@@ -65,7 +66,7 @@ const authenticate = async (req: Request, res: Response) => {
 const user_routes = (app: express.Application) => {
   app.get('/users', index),
     app.get('/users/:id', show),
-    app.post('/users/:id', create);
+    app.post('/users/', create);
   app.get('/users/authenticate/:id', authenticate);
 };
 

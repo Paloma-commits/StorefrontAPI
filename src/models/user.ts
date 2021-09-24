@@ -6,6 +6,7 @@ const saltRounds = process.env.SALT_ROUNDS!;
 
 export type User = {
   id: number;
+  username: string
   firstname: string;
   lastname: string;
   password: string;
@@ -42,29 +43,28 @@ export class userStore {
   }
 
   async create(u: User): Promise<User> {
-    const conn = await client.connect();
-
     try {
+      const conn = await client.connect();
       const sql =
-        'INSERT INTO users (firstname, lastname, password) VALUES ($1, $2, $3)';
+        'INSERT INTO users (username, firstname, lastname, password_digest) VALUES ($1, $2, $3, $4)';
 
       const hash = bcrypt.hashSync(u.password + pepper, parseInt(saltRounds));
-      const result = await conn.query(sql, [u.id, hash]);
+      const result = await conn.query(sql, [u.username, hash]);
 
       const user = result.rows[0];
       conn.release();
       return user;
     } catch (err) {
-      throw new Error(`Unable to add user: ${u} ${err}`);
+      throw new Error(`Unable to add user: ${u.username} : ${err}`);
     }
   }
 
-  async authenticate(id: number, password: string): Promise<User | null> {
+  async authenticate(username: string, password: string): Promise<User | null> {
     const conn = await client.connect();
 
     const sql = 'SELECT password_digest FROM users WHERE username = ($1)';
 
-    const result = await conn.query(sql, [id]);
+    const result = await conn.query(sql, [username]);
 
     console.log(password + pepper);
 
