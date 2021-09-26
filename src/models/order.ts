@@ -52,7 +52,7 @@ export class orderStore {
       const conn = await client.connect();
 
       const sql =
-        'SELECT * FROM order_products WHERE user_id=($1) INNER JOIN orders ON order.id = orders.id;';
+        'SELECT * FROM order_products AS op INNER JOIN orders AS a ON o.id = op.orderid;';
 
       const result = await conn.query(sql, [user_id]);
 
