@@ -17,12 +17,12 @@ const index = async (_req: Request, res: Response) => {
 };
 
 const show = async (req: Request, res: Response) => {
-  const show_id = req.body.id;
-
+  const user = await user_store.show(req.body.id)
+  
   try {
-    const showed_user = await user_store.show(show_id);
-    res.json(showed_user);
+    res.json(user);
   } catch (err) {
+    console.log(err)
     res.status(400);
     res.json(err);
   }
