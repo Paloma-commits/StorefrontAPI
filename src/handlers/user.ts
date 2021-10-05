@@ -17,12 +17,12 @@ const index = async (_req: Request, res: Response) => {
 };
 
 const show = async (req: Request, res: Response) => {
-  const user = await user_store.show(req.body.id)
-  
+  const user = await user_store.show(req.body.id);
+
   try {
     res.json(user);
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.status(400);
     res.json(err);
   }
@@ -39,10 +39,10 @@ const create = async (req: Request, res: Response) => {
 
   try {
     const new_user = await user_store.create(user);
-    var token = jwt.sign({user: new_user}, token_secret);
+    var token = jwt.sign({ user: new_user }, token_secret);
     res.json(token);
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.status(400);
     res.json(err);
   }
@@ -68,8 +68,8 @@ const authenticate = async (req: Request, res: Response) => {
 
 const user_routes = (app: express.Application) => {
   app.get('/users', index),
-  app.get('/users/:id', show),
-  app.post('/users/', create);
+    app.get('/users/:id', show),
+    app.post('/users/', create);
   app.get('/users/authenticate/:id', authenticate);
 };
 

@@ -27,17 +27,17 @@ const show = async (_req: Request, res: Response) => {
 };
 
 const create = async (req: Request, res: Response) => {
-
   const prod: Product = {
     name: req.body.name,
-    price: req.body.price
-  }
+    price: req.body.price,
+  };
   try {
-      const newprod = await store.create(prod)
-      res.json(newprod)
-  } catch(err) {
-      res.status(400)
-      res.json(err)
+    const newprod = await store.create(prod);
+    res.json(newprod);
+  } catch (err) {
+    res.status(400);
+    res.json(err);
+    console.log(err);
   }
 
   //   const prod: Product = {
