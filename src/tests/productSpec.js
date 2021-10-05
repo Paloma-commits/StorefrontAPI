@@ -1,4 +1,8 @@
 import { productStore } from '../models/product';
+//productStore = require('../models/product')
+// import client from '../database'
+// import supertest from 'supertest';
+// import app from '../server'
 
 const store = new productStore();
 
@@ -14,7 +18,9 @@ describe('Product Model', () => {
   it('should have a create method', () => {
     expect(store.create).toBeDefined();
   });
+});
 
+describe('Product Model methods', () => {
 //   it('create method should add a product', async () => {
 //     const result = await store.create({
 //       name: 'Catan',
@@ -45,5 +51,8 @@ describe('Product Model', () => {
 //       name: 'Catan',
 //       price: 40,
 //     });
-//   });
+
 });
+
+
+
