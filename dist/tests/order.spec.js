@@ -36,36 +36,36 @@ describe('Order Model', () => {
                 username: 'tester',
                 firstname: 'Test',
                 lastname: 'User',
-                password: 'test123'
+                password: 'test123',
             });
             yield productModel.create({
                 name: 'Catan',
-                price: 40
+                price: 40,
             });
             yield orderModel.create({
                 //id:1,
                 user_id: 1,
-                status: 'active'
+                status: 'active',
             });
         }));
         describe('Order Methods', () => {
             it('Create method should return an order', () => __awaiter(void 0, void 0, void 0, function* () {
                 const result = yield orderModel.create({
                     user_id: 1,
-                    status: 'active'
+                    status: 'active',
                 });
                 expect(result).toEqual(jasmine.objectContaining({
-                    user_id: '1'
+                    user_id: 1,
                 }));
             }));
             it('Add order', () => __awaiter(void 0, void 0, void 0, function* () {
                 const result = yield orderModel.add_order({
                     quantity: 2,
                     order_id: 1,
-                    product_id: 1
+                    product_id: 1,
                 });
                 expect(result).toEqual(jasmine.objectContaining({
-                    order_id: 1
+                    order_id: 1,
                 }));
             }));
         });
@@ -76,16 +76,16 @@ describe('Order Model', () => {
                 username: 'tester',
                 firstname: 'Test',
                 lastname: 'User',
-                password: 'test123'
+                password: 'test123',
             });
             yield productModel.create({
                 name: 'catan',
-                price: 40
+                price: 40,
             });
             yield orderModel.add_order({
                 quantity: 2,
                 order_id: 1,
-                product_id: 1
+                product_id: 1,
             });
         }));
         it('Check if server runs with a 200 status', () => __awaiter(void 0, void 0, void 0, function* () {
@@ -93,21 +93,17 @@ describe('Order Model', () => {
             expect(response.status).toBe(200);
         }));
         it('Test "create_order" should return a created order', () => __awaiter(void 0, void 0, void 0, function* () {
-            const response = yield request
-                .post('/orders')
-                .send({
-                "user_id": 1,
-                "status": "active"
+            const response = yield request.post('/orders').send({
+                user_id: 1,
+                status: 'active',
             });
             expect(response.status).toBe(200);
         }));
         it('Test "add_order" should return a created order', () => __awaiter(void 0, void 0, void 0, function* () {
-            const response = yield request
-                .post('/orders/1/products')
-                .send({
-                "quantity": 2,
-                "order_id": 1,
-                "product_id": 1
+            const response = yield request.post('/orders/1/products').send({
+                quantity: 2,
+                order_id: 1,
+                product_id: 1,
             });
             expect(response.status).toBe(200);
         }));

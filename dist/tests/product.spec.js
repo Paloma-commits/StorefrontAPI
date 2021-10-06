@@ -64,7 +64,7 @@ describe('Products Test Endpoints', () => {
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
         yield store.create({
             name: 'sweater',
-            price: 65
+            price: 65,
         });
     }));
     it('Check if server runs, should return 200 status', () => __awaiter(void 0, void 0, void 0, function* () {
@@ -72,21 +72,17 @@ describe('Products Test Endpoints', () => {
         expect(response.status).toBe(200);
     }));
     it('Test Index returns array of products', () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request
-            .get('/products');
+        const response = yield request.get('/products');
         expect(response.status).toBe(200);
     }));
     it('Test Show returns specified products', () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request
-            .get('/products/1');
+        const response = yield request.get('/products/1');
         expect(response.status).toBe(200);
     }));
     it('Test Create should return created Product', () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request
-            .post('/products')
-            .send({
+        const response = yield request.post('/products').send({
             name: 'bycicle',
-            price: 650
+            price: 650,
         });
         expect(response.status).toBe(200);
     }));
