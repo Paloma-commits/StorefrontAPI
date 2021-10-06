@@ -1,7 +1,7 @@
 import client from '../database';
 
 export type Product = {
-  //id: number;
+  id?: number;
   name: string;
   price: number;
 };
@@ -24,7 +24,7 @@ export class productStore {
     }
   }
 
-  async show(id: string): Promise<Product> {
+  async show(id: number): Promise<Product> {
     try {
       const sql = 'SELECT * FROM products WHERE id=($1)';
       // @ts-ignore

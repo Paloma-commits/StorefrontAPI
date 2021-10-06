@@ -21,3 +21,8 @@ app.listen(3000, function () {
 product_routes(app);
 user_routes(app);
 order_routes(app);
+
+export default app;
+
+//"test": "ENV=test && db-migrate --env test up && jasmine-ts && db-migrate db:drop test",
+//"start": "nodemon src/server.ts",

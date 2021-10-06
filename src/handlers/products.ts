@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express';
 import { Product, productStore } from '../models/product';
-import jwt from 'jsonwebtoken';
 import verifyUser from './verifyUser';
 
 const store = new productStore();
@@ -40,12 +39,6 @@ const create = async (req: Request, res: Response) => {
     console.log(err);
   }
 
-  //   const prod: Product = {
-  //     //id: req.body.id,
-  //     name: req.body.name,
-  //     price: req.body.price,
-  //   };
-
   //   try{
   //     jwt.verify(req.body.token, process.env.TOKEN_SECRET!);
 
@@ -57,16 +50,6 @@ const create = async (req: Request, res: Response) => {
   //   //const authorizationHeader = req.headers.authorization;
   //   //const token = authorizationHeader!.split(' ')[1];
   //   //jwt.verify(token, process.env.TOKEN_SECRET!);
-
-  // try{
-  //   const newProd = await store.create(prod);
-  //   res.json(newProd);
-
-  // } catch (err) {
-  //   res.status(401);
-  //   res.json('Access denied, invalid token');
-  //   return;
-  // }
 };
 //here go all the routes with the different functions that products has in the model
 

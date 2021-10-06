@@ -5,7 +5,7 @@ const pepper = process.env.BCRYPT_PASSWORD!;
 const saltRounds = process.env.SALT_ROUNDS!;
 
 export type User = {
-  //id: number;
+  id?: number;
   username: string;
   firstname: string;
   lastname: string;
