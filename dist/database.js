@@ -14,22 +14,27 @@ const { POSTGRES_HOST, POSTGRES_DB, POSTGRES_DB_TEST, POSTGRES_USER, POSTGRES_PA
 //   user: POSTGRES_USER,
 //   password: POSTGRES_PASSWORD,
 // });
-let client = new pg_1.Pool();
-console.log(ENV);
-if (ENV === 'test') {
-    client = new pg_1.Pool({
-        host: POSTGRES_HOST,
-        database: POSTGRES_DB_TEST,
-        user: POSTGRES_USER,
-        password: POSTGRES_PASSWORD,
-    });
-}
-if (ENV === 'dev') {
-    client = new pg_1.Pool({
-        host: POSTGRES_HOST,
-        database: POSTGRES_DB,
-        user: POSTGRES_USER,
-        password: POSTGRES_PASSWORD,
-    });
-}
+const client = new pg_1.Pool({
+    host: POSTGRES_HOST,
+    database: ENV === "dev" ? POSTGRES_DB : POSTGRES_DB_TEST,
+    user: POSTGRES_USER,
+    password: POSTGRES_PASSWORD,
+});
+// let client: Pool = new Pool();
+// console.log(ENV);
+// if (ENV === 'test') {
+//   client = new Pool({
+//     host: POSTGRES_HOST,
+//     database: POSTGRES_DB_TEST,
+//     user: POSTGRES_USER,
+//     password: POSTGRES_PASSWORD,
+//   });
+// }
+// if (ENV === 'dev') {
+//   client = new Pool({
+//     host: POSTGRES_HOST,
+//     database: POSTGRES_DB,
+//     user: POSTGRES_USER,
+//     password: POSTGRES_PASSWORD,
+//   });
 exports.default = client;
