@@ -31,25 +31,29 @@ describe('Product Model', () => {
 describe('Product Model methods', () => {
     it('create method should add a product', () => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield store.create({
-            //id: 1,
             name: 'Catan',
             price: 40,
         });
-        expect(result).toEqual({
-            id: 1,
+        expect(result).toEqual(jasmine.objectContaining({
             name: 'Catan',
             price: 40,
-        });
+        }));
     }));
+});
+describe('Product Model methods 2', () => {
+    beforeAll((() => __awaiter(void 0, void 0, void 0, function* () {
+        yield store.create({
+            name: 'Catan',
+            price: 40,
+        });
+    })));
     it('index method should return a list of products', () => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield store.index();
-        expect(result).toEqual([
-            {
+        expect(result).toEqual(jasmine.objectContaining([{
                 id: 1,
                 name: 'Catan',
                 price: 40,
-            },
-        ]);
+            }]));
     }));
     it('show method should return the correct product', () => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield store.show(1);
@@ -60,30 +64,30 @@ describe('Product Model methods', () => {
         });
     }));
 });
-// describe('Products Test Endpoints', () => {
-//   beforeAll(async () => {
-//     await store.create({
-//       name: 'sweater',
-//       price: 65,
-//     });
-//   });
-//   it('Check if server runs, should return 200 status', async () => {
-//     const response = await request.get('/');
-//     expect(response.status).toBe(200);
-//   });
-//   it('Test Index returns array of products', async () => {
-//     const response = await request.get('/products');
-//     expect(response.status).toBe(200);
-//   });
-//   it('Test Show returns specified products', async () => {
-//     const response = await request.get('/products/1');
-//     expect(response.status).toBe(200);
-//   });
-//   it('Test Create should return created Product', async () => {
-//     const response = await request.post('/products').send({
-//       name: 'bycicle',
-//       price: 650,
-//     });
-//     expect(response.status).toBe(200);
-//   });
-// });
+describe('Products Test Endpoints', () => {
+    beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
+        yield store.create({
+            name: 'sweater',
+            price: 65,
+        });
+    }));
+    it('Check if server runs, should return 200 status', () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield request.get('/');
+        expect(response.status).toBe(200);
+    }));
+    it('Test Index returns array of products', () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield request.get('/products');
+        expect(response.status).toBe(200);
+    }));
+    it('Test Show returns specified products', () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield request.get('/products/1');
+        expect(response.status).toBe(200);
+    }));
+    it('Test Create should not create Product without being authorised', () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield request.post('/products').send({
+            name: 'bycicle',
+            price: 650,
+        });
+        expect(response.status).toBe(401);
+    }));
+});

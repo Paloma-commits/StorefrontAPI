@@ -49,15 +49,13 @@ describe('Test Methods returning values are correct ', () => {
             status: 'active',
         });
     }));
-});
-describe('Order Methods', () => {
     it('Create method should return an order', () => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield orderModel.create({
             user_id: 1,
             status: 'active',
         });
         expect(result).toEqual(jasmine.objectContaining({
-            user_id: 1
+            user_id: '1'
         }));
     }));
     it('Add order', () => __awaiter(void 0, void 0, void 0, function* () {
@@ -67,7 +65,7 @@ describe('Order Methods', () => {
             product_id: 1,
         });
         expect(result).toEqual(jasmine.objectContaining({
-            order_id: 1
+            order_id: '1'
         }));
     }));
 });

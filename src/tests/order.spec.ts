@@ -3,6 +3,7 @@ import { User, userStore } from '../models/user';
 import { Product, productStore } from '../models/product';
 import supertest from 'supertest';
 import app from '../server';
+import client from '../database';
 const request = supertest(app);
 
 const orderModel = new orderStore();
@@ -42,9 +43,7 @@ describe('Test Methods returning values are correct ', () => {
             status: 'active',
         });
     });
-});
 
-describe('Order Methods', () => {
     it('Create method should return an order', async () => {
         const result = await orderModel.create({
             user_id: 1,
@@ -52,7 +51,7 @@ describe('Order Methods', () => {
         });
         expect(result).toEqual(
             jasmine.objectContaining({
-                user_id: 1
+                user_id: '1'
             })
         );
     });
@@ -66,12 +65,12 @@ describe('Order Methods', () => {
 
         expect(result).toEqual(
             jasmine.objectContaining({
-                order_id: 1
+                order_id: '1'
             })
         );
     });
-});
 
+});
 
 describe('Testing EndPoints', () => {
     beforeAll(async () => {

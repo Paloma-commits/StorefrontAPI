@@ -24,6 +24,7 @@ const add_order = async (_req: Request, res: Response) => {
     res.json(addedProduct);
   } catch (err) {
     res.status(400);
+    console.log(err);
     res.json(err);
   }
 };

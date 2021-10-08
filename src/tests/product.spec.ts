@@ -23,26 +23,33 @@ describe('Product Model', () => {
 describe('Product Model methods', () => {
   it('create method should add a product', async () => {
     const result = await store.create({
-      //id: 1,
       name: 'Catan',
       price: 40,
     });
-    expect(result).toEqual({
-      id: 1,
+    expect(result).toEqual(jasmine.objectContaining({
       name: 'Catan',
       price: 40,
-    });
+    }));
   });
+});
+
+describe('Product Model methods 2', () => {
+
+  beforeAll((async () => {
+    await store.create({
+      name: 'Catan',
+      price: 40,
+    });
+  }));
 
   it('index method should return a list of products', async () => {
     const result = await store.index();
-    expect(result).toEqual([
-      {
-        id: 1,
-        name: 'Catan',
-        price: 40,
-      },
-    ]);
+    expect(result).toEqual(jasmine.objectContaining([{
+      id: 1,
+      name: 'Catan',
+      price: 40,
+    }],
+    ));
   });
 
   it('show method should return the correct product', async () => {
@@ -53,36 +60,37 @@ describe('Product Model methods', () => {
       price: 40,
     });
   });
+  
 });
 
-// describe('Products Test Endpoints', () => {
-//   beforeAll(async () => {
-//     await store.create({
-//       name: 'sweater',
-//       price: 65,
-//     });
-//   });
+describe('Products Test Endpoints', () => {
+  beforeAll(async () => {
+    await store.create({
+      name: 'sweater',
+      price: 65,
+    });
+  });
 
-//   it('Check if server runs, should return 200 status', async () => {
-//     const response = await request.get('/');
-//     expect(response.status).toBe(200);
-//   });
+  it('Check if server runs, should return 200 status', async () => {
+    const response = await request.get('/');
+    expect(response.status).toBe(200);
+  });
 
-//   it('Test Index returns array of products', async () => {
-//     const response = await request.get('/products');
-//     expect(response.status).toBe(200);
-//   });
+  it('Test Index returns array of products', async () => {
+    const response = await request.get('/products');
+    expect(response.status).toBe(200);
+  });
 
-//   it('Test Show returns specified products', async () => {
-//     const response = await request.get('/products/1');
-//     expect(response.status).toBe(200);
-//   });
+  it('Test Show returns specified products', async () => {
+    const response = await request.get('/products/1');
+    expect(response.status).toBe(200);
+  });
 
-//   it('Test Create should return created Product', async () => {
-//     const response = await request.post('/products').send({
-//       name: 'bycicle',
-//       price: 650,
-//     });
-//     expect(response.status).toBe(200);
-//   });
-// });
+  it('Test Create should not create Product without being authorised', async () => {
+    const response = await request.post('/products').send({
+      name: 'bycicle',
+      price: 650,
+    });
+    expect(response.status).toBe(401);
+  });
+});

@@ -53,7 +53,7 @@ class userStore {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const conn = yield database_1.default.connect();
-                const sql = 'INSERT INTO users (username, firstname, lastname, password) VALUES ($1, $2, $3, $4) RETURNING *';
+                const sql = 'INSERT INTO users (username, firstname, lastname, password) VALUES ($1, $2, $3, $4) RETURNING username, firstname, lastname;';
                 const hash = bcrypt_1.default.hashSync(u.password + pepper, parseInt(saltRounds));
                 const result = yield conn.query(sql, [
                     u.username,
@@ -61,6 +61,7 @@ class userStore {
                     u.lastname,
                     hash,
                 ]);
+                console.log(result);
                 const user = result.rows[0];
                 conn.release();
                 return user;
