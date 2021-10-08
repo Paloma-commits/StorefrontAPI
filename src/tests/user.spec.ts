@@ -21,14 +21,14 @@ describe('User Model', () => {
 });
 
 describe('User Model methods', () => {
-  beforeAll(async () => {
-    await store.create({
-      username: 'peppap',
-      firstname: 'Peppa',
-      lastname: 'Pig',
-      password: 'children',
-    });
-  });
+  // beforeAll(async () => {
+  //   await store.create({
+  //     username: 'peppap',
+  //     firstname: 'Peppa',
+  //     lastname: 'Pig',
+  //     password: 'children',
+  //   });
+  // });
 
   it('create method should add a user', async () => {
     const result = await store.create({
@@ -38,38 +38,34 @@ describe('User Model methods', () => {
       password: 'password123',
     });
     expect(result).toEqual({
+      id: 1,
       username: 'palo',
       firstname: 'paloma',
       lastname: 'laso',
-      password: 'password123',
+      password: '$2b$10$fnQKnrYg3JIRB3mC2vCP0exL9QwlMIWkGWn0GjHxkrrPLSd68LaBG',
     });
   });
 
   it('index method should return a list of existing users', async () => {
     const result = await store.index();
-    expect(result[0]).toEqual(
-      jasmine.objectContaining({
+    expect(result[0]).toEqual({
         id: 1,
         username: 'palo',
         firstname: 'paloma',
         lastname: 'laso',
-        password:
-          '$2b$10$neBd4zDSMhYk3qxpYLxX8.WYssypJWTk22ISpeHEGH0etBcOv/Tnm',
-      })
-    );
+        password: '$2b$10$fnQKnrYg3JIRB3mC2vCP0exL9QwlMIWkGWn0GjHxkrrPLSd68LaBG',
+    });
   });
 
   it('show method should return the correct user', async () => {
     const result = await store.show(1);
-    expect(result).toEqual(
-      jasmine.objectContaining({
+    expect(result).toEqual({
         id: 1,
         username: 'palo',
         firstname: 'paloma',
         lastname: 'laso',
         password:
-          '$2b$10$neBd4zDSMhYk3qxpYLxX8.WYssypJWTk22ISpeHEGH0etBcOv/Tnm',
+          '$2b$10$fnQKnrYg3JIRB3mC2vCP0exL9QwlMIWkGWn0GjHxkrrPLSd68LaBG',
       })
-    );
   });
 });
