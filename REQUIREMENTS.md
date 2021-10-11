@@ -37,8 +37,21 @@ Table: users (id: SERIAL PRIMARY KEY, firstName VARCHAR(100), lastName VARCHAR(1
 
 #### Orders
 - id
-- id of each product in the order
-- quantity of each product in the order
 - user_id
 - status of order (active or complete)
+
+Table: orders (id: SERIAL PRIMARY KEY,
+            user_id: bigint REFERENCES users(id),
+            status: VARCHAR)
+
+#### Order-Products
+- id SERIAL 
+- quantity 
+- order_id 
+- product_id 
+
+Tbale order_products (id: SERIAL PRIMARY KEY,
+                    quantity: integer,
+                    order_id: bigint REFERENCES orders(id),
+                    product_id: bigint REFERENCES products(id))
 

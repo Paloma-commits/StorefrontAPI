@@ -1,6 +1,7 @@
 import { userStore } from '../models/user';
-//import client from '../database';
-//import supertest from 'supertest';
+import supertest from 'supertest';
+import app from '../server';
+const request = supertest(app);
 
 const store = new userStore();
 //const request = supertest(app);
@@ -50,22 +51,58 @@ describe('User model methods', () => {
   });
 
   it('index method should return a list of existing users', async () => {
-    // const result = await store.index();
-    // expect(result).toEqual(jasmine.objectContaining([{
-    //   //id: 1,
-    //   username: 'palo',
-    //   firstname: 'paloma',
-    //   lastname: 'laso',
-    // }]));
+    const result = await store.index();
+    expect(result).toEqual(jasmine.objectContaining([{
+      firstname: 'paloma',
+      lastname: 'laso',
+    }],
+    ));
   });
 
   it('show method should return the correct user', async () => {
-  //   const result = await store.show(2);
-  //   expect(result).toEqual(jasmine.objectContaining({
-  //     //id: 1,
-  //     username: 'palo',
-  //     firstname: 'paloma',
-  //     lastname: 'laso',
-  //   }));
+    const result = await store.show(1);
+    expect(result).toEqual(jasmine.objectContaining({
+      //id: 1,
+      username: 'tester',
+      firstname: 'Test',
+      lastname: 'User',
+    }));
   });
+});
+
+describe('User Test Endpoints', () => {
+  beforeAll(async () => {
+    await store.create({
+      username: 'palo',
+      firstname: 'paloma',
+      lastname: 'laso',
+      password: 'password123',
+    });
+  });
+
+  it('Check if server runs, should return 200 status', async () => {
+    const response = await request.get('/');
+    expect(response.status).toBe(200);
+  });
+
+  it('Test Index returns array of users', async () => {
+    const response = await request.get('/users');
+    expect(response.status).toBe(200);
+  });
+
+  it('Test Show returns specified user', async () => {
+    const response = await request.get('/users/1');
+    expect(response.status).toBe(200);
+  });
+
+  it('Test Create should create a new user', async () => {
+    const response = await request.post('/users').send({
+      username: 'palo',
+      firstname: 'paloma',
+      lastname: 'laso',
+      password: 'password123',
+    });
+    expect(response.status).toBe(200);
+  });
+
 });
