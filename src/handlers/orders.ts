@@ -6,7 +6,7 @@ const order_store = new orderStore();
 
 const order_routes = (app: express.Application) => {
   app.get('/orders/:id', order_by_userid);
-  app.post('/orders', create);
+  app.post('/orders', verifyUser, create);
   app.post('/orders/:id/products', add_order);
 };
 
@@ -37,7 +37,6 @@ const order_by_userid = async (req: Request, res: Response) => {
 const create = async (req: Request, res: Response) => {
   try {
     const ord: Order = {
-      //id: req.body.id,
       user_id: req.body.user_id,
       status: req.body.status,
     };

@@ -19,7 +19,7 @@ export class userStore {
   async index(): Promise<User[]> {
     try {
       const conn = await client.connect();
-      const sql = ' SELECT * FROM users ';
+      const sql = ' SELECT firstname, lastname FROM users ';
       const result = await conn.query(sql);
       conn.release(); // we need to close the connection to the db!
       return result.rows;
@@ -32,7 +32,8 @@ export class userStore {
   async show(id: number): Promise<User> {
     try {
       const conn = await client.connect();
-      const sql = 'SELECT * FROM users WHERE id=($1)';
+      const sql =
+        'SELECT username, firstname, lastname FROM users WHERE id=($1)';
       const result = await conn.query(sql, [id]);
       conn.release();
 
@@ -46,7 +47,7 @@ export class userStore {
     try {
       const conn = await client.connect();
       const sql =
-        'INSERT INTO users (username, firstname, lastname, password) VALUES ($1, $2, $3, $4) RETURNING username, firstname, lastname;';
+        'INSERT INTO users (username, firstname, lastname, password) VALUES ($1, $2, $3, $4) RETURNING id, username, firstname, lastname;';
 
       const hash = bcrypt.hashSync(u.password + pepper, parseInt(saltRounds));
       const result = await conn.query(sql, [
@@ -56,10 +57,9 @@ export class userStore {
         hash,
       ]);
 
-      console.log(result)
-
       const user = result.rows[0];
       conn.release();
+
       return user;
     } catch (err) {
       throw new Error(`Unable to add user: ${u.username} : ${err}`);
@@ -85,5 +85,25 @@ export class userStore {
     }
 
     return null;
+
+    conn.release();
+  }
+
+  async delete(id: number): Promise<User> {
+    try {
+      const sql = 'DELETE FROM users WHERE id=($1)';
+      // @ts-ignore
+      const conn = await client.connect();
+
+      const result = await conn.query(sql, [id]);
+
+      const user = result.rows[0];
+
+      conn.release();
+
+      return user;
+    } catch (err) {
+      throw new Error(`Could not delete user ${id}. Error: ${err}`);
+    }
   }
 }

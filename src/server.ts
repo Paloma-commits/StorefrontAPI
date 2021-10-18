@@ -26,3 +26,4 @@ export default app;
 
 //"test": "ENV=test && db-migrate --env test up && jasmine-ts && db-migrate db:drop test",
 //"start": "nodemon src/server.ts",
+//"test": "npm run build && ENV=test && db-migrate up -c 4 --env test && jasmine && db-migrate down -c 4 --env test",

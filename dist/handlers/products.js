@@ -49,21 +49,16 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.json(err);
         console.log(err);
     }
-    //   try{
-    //     jwt.verify(req.body.token, process.env.TOKEN_SECRET!);
-    //   }catch(err){
-    //     res.status(401);
-    //     res.json(`Invalid token ${err}`)
-    //     return
-    //   }
-    //   //const authorizationHeader = req.headers.authorization;
-    //   //const token = authorizationHeader!.split(' ')[1];
-    //   //jwt.verify(token, process.env.TOKEN_SECRET!);
+});
+const erase = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const deleted = yield store.delete(req.body.id);
+    res.json(deleted);
 });
 //here go all the routes with the different functions that products has in the model
 const product_routes = (app) => {
     app.get('/products', index);
     app.get('/products/:id', show);
     app.post('/products', verifyUser_1.default, create);
+    app.delete('/products/:id', erase);
 };
 exports.default = product_routes;

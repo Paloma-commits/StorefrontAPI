@@ -22,8 +22,8 @@ class orderStore {
                 const sql = 'INSERT INTO orders (user_id, status) VALUES ($1, $2) RETURNING *;';
                 const result = yield conn.query(sql, [o.user_id, o.status]);
                 const new_order = result.rows[0];
-                conn.release();
                 return new_order;
+                conn.release();
             }
             catch (err) {
                 console.log(err);

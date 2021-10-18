@@ -5,7 +5,6 @@ const request = supertest(app);
 
 const store = new userStore();
 //const request = supertest(app);
-let userToken = '';
 
 describe('User Model', () => {
   it('should have an index method', () => {
@@ -19,10 +18,13 @@ describe('User Model', () => {
   it('should have a create method', () => {
     expect(store.create).toBeDefined();
   });
+
+  it('should have an erase method', () => {
+    expect(store.delete).toBeDefined();
+  });
 });
 
-describe('User Model create method', () => {
-
+describe('User Model methods', () => {
   it('create method should add a user', async () => {
     const result = await store.create({
       username: 'palo',
@@ -30,68 +32,43 @@ describe('User Model create method', () => {
       lastname: 'laso',
       password: 'password123',
     });
-    expect(result).toEqual(jasmine.objectContaining({
-      //id: 1,
-      username: 'palo',
-      firstname: 'paloma',
-      lastname: 'laso',
-      //password: 'password123',
-    }));
-  });
-});
-
-describe('User model methods', () => {
-  beforeAll(async () => {
-    await store.create({
-      username: 'palo',
-      firstname: 'paloma',
-      lastname: 'laso',
-      password: 'children',
-    });
+    expect(result).toBeTruthy;
   });
 
   it('index method should return a list of existing users', async () => {
     const result = await store.index();
-    expect(result).toEqual(jasmine.objectContaining([{
-      firstname: 'paloma',
-      lastname: 'laso',
-    }],
-    ));
+    expect(result).toEqual(
+      jasmine.objectContaining([
+        {
+          firstname: 'paloma',
+          lastname: 'laso',
+        },
+      ])
+    );
   });
 
   it('show method should return the correct user', async () => {
     const result = await store.show(1);
-    expect(result).toEqual(jasmine.objectContaining({
-      //id: 1,
-      username: 'tester',
-      firstname: 'Test',
-      lastname: 'User',
-    }));
+    expect(result).toEqual(
+      jasmine.objectContaining({
+        username: 'palo',
+        firstname: 'paloma',
+        lastname: 'laso',
+      })
+    );
+  });
+
+  it('delete method should erase the correct user', async () => {
+    store.delete(1);
+    const result = await store.index();
+
+    expect(result).toEqual([]);
   });
 });
 
 describe('User Test Endpoints', () => {
-  beforeAll(async () => {
-    await store.create({
-      username: 'palo',
-      firstname: 'paloma',
-      lastname: 'laso',
-      password: 'password123',
-    });
-  });
-
   it('Check if server runs, should return 200 status', async () => {
     const response = await request.get('/');
-    expect(response.status).toBe(200);
-  });
-
-  it('Test Index returns array of users', async () => {
-    const response = await request.get('/users');
-    expect(response.status).toBe(200);
-  });
-
-  it('Test Show returns specified user', async () => {
-    const response = await request.get('/users/1');
     expect(response.status).toBe(200);
   });
 
@@ -105,4 +82,20 @@ describe('User Test Endpoints', () => {
     expect(response.status).toBe(200);
   });
 
+  it('Test Index returns array of users', async () => {
+    const response = await request.get('/users');
+    expect(response.status).toBe(200);
+  });
+
+  it('Test Show returns specified user', async () => {
+    const response = await request.get('/users/1');
+    expect(response.status).toBe(200);
+  });
+
+  it('delete method should erase the correct user and return empty array', async () => {
+    store.delete(1);
+    const result = await store.index();
+
+    expect(result).toEqual([]);
+  });
 });

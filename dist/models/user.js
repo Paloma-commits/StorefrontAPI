@@ -24,7 +24,7 @@ class userStore {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const conn = yield database_1.default.connect();
-                const sql = ' SELECT * FROM users ';
+                const sql = ' SELECT firstname, lastname FROM users ';
                 const result = yield conn.query(sql);
                 conn.release(); // we need to close the connection to the db!
                 return result.rows;
@@ -39,7 +39,7 @@ class userStore {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const conn = yield database_1.default.connect();
-                const sql = 'SELECT * FROM users WHERE id=($1)';
+                const sql = 'SELECT username, firstname, lastname FROM users WHERE id=($1)';
                 const result = yield conn.query(sql, [id]);
                 conn.release();
                 return result.rows[0];
@@ -53,7 +53,7 @@ class userStore {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const conn = yield database_1.default.connect();
-                const sql = 'INSERT INTO users (username, firstname, lastname, password) VALUES ($1, $2, $3, $4) RETURNING username, firstname, lastname;';
+                const sql = 'INSERT INTO users (username, firstname, lastname, password) VALUES ($1, $2, $3, $4) RETURNING id, username, firstname, lastname;';
                 const hash = bcrypt_1.default.hashSync(u.password + pepper, parseInt(saltRounds));
                 const result = yield conn.query(sql, [
                     u.username,
@@ -61,7 +61,6 @@ class userStore {
                     u.lastname,
                     hash,
                 ]);
-                console.log(result);
                 const user = result.rows[0];
                 conn.release();
                 return user;
@@ -85,6 +84,23 @@ class userStore {
                 }
             }
             return null;
+            conn.release();
+        });
+    }
+    delete(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const sql = 'DELETE FROM users WHERE id=($1)';
+                // @ts-ignore
+                const conn = yield database_1.default.connect();
+                const result = yield conn.query(sql, [id]);
+                const user = result.rows[0];
+                conn.release();
+                return user;
+            }
+            catch (err) {
+                throw new Error(`Could not delete user ${id}. Error: ${err}`);
+            }
         });
     }
 }

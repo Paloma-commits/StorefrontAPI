@@ -66,11 +66,17 @@ const authenticate = async (req: Request, res: Response) => {
   }
 };
 
+const erase = async (req: Request, res: Response) => {
+  const deleted = await user_store.delete(req.body.id);
+  res.json(deleted);
+};
+
 const user_routes = (app: express.Application) => {
-  app.get('/users', index),
-    app.get('/users/:id', show),
-    app.post('/users/', create);
+  app.get('/users', index);
+  app.get('/users/:id', show);
+  app.post('/users/', create);
   app.get('/users/authenticate/:id', authenticate);
+  app.delete('/users/:id', erase);
 };
 
 export default user_routes;

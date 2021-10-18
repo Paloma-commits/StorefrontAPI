@@ -8,12 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const order_1 = require("../models/order");
+const verifyUser_1 = __importDefault(require("./verifyUser"));
 const order_store = new order_1.orderStore();
 const order_routes = (app) => {
     app.get('/orders/:id', order_by_userid);
-    app.post('/orders', create);
+    app.post('/orders', verifyUser_1.default, create);
     app.post('/orders/:id/products', add_order);
 };
 exports.default = order_routes;
@@ -40,7 +44,6 @@ const order_by_userid = (req, res) => __awaiter(void 0, void 0, void 0, function
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const ord = {
-            //id: req.body.id,
             user_id: req.body.user_id,
             status: req.body.status,
         };

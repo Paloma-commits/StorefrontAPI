@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -31,79 +22,99 @@ describe('Order Model', () => {
         });
     });
 });
-describe('Test Methods returning values are correct ', () => {
-    beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
-        yield userModel.create({
-            username: 'tester',
-            firstname: 'Test',
-            lastname: 'User',
-            password: 'test123',
-        });
-        yield productModel.create({
-            name: 'Catan',
-            price: 40,
-        });
-        yield orderModel.create({
-            //id:1,
-            user_id: 1,
-            status: 'active',
-        });
-    }));
-    it('Create method should return an order', () => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield orderModel.create({
-            user_id: 1,
-            status: 'active',
-        });
-        expect(result).toEqual(jasmine.objectContaining({
-            user_id: '1'
-        }));
-    }));
-    it('Add order', () => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield orderModel.add_order({
-            quantity: 2,
-            order_id: 1,
-            product_id: 1,
-        });
-        expect(result).toEqual(jasmine.objectContaining({
-            order_id: '1'
-        }));
-    }));
-});
-describe('Testing EndPoints', () => {
-    beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
-        yield userModel.create({
-            username: 'tester',
-            firstname: 'Test',
-            lastname: 'User',
-            password: 'test123',
-        });
-        yield productModel.create({
-            name: 'Catan',
-            price: 40,
-        });
-        yield orderModel.add_order({
-            quantity: 2,
-            order_id: 1,
-            product_id: 1,
-        });
-    }));
-    it('Check if server runs with a 200 status', () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request.get('/');
-        expect(response.status).toBe(200);
-    }));
-    it('Test "create_order" should return a created order', () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request.post('/orders').send({
-            user_id: 1,
-            status: 'active',
-        });
-        expect(response.status).toBe(200);
-    }));
-    it('Test "add_order" should return a created order', () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request.post('/orders/1/products').send({
-            quantity: 2,
-            order_id: 1,
-            product_id: 1,
-        });
-        expect(response.status).toBe(200);
-    }));
-});
+// describe('Test Methods returning values are correct ', () => {
+//   beforeAll(async () => {
+//     await userModel.create({
+//       username: 'tester',
+//       firstname: 'Test',
+//       lastname: 'User',
+//       password: 'test123',
+//     });
+//     await productModel.create({
+//       name: 'Catan',
+//       price: 40,
+//     });
+//     // await orderModel.create({
+//     //   //id:1,
+//     //   user_id: 1,
+//     //   status: 'active',
+//     // });
+//   });
+//   it('Create method should return an order', async () => {
+//     const result = await orderModel.create({
+//       user_id: 1,
+//       status: 'active',
+//     });
+//     expect(result).toEqual(
+//       jasmine.objectContaining({
+//         user_id: '1',
+//       })
+//     );
+//   });
+//   it('Add order', async () => {
+//     const result = await orderModel.add_order({
+//       quantity: 2,
+//       order_id: 1,
+//       product_id: 1,
+//     });
+//     expect(result).toEqual(
+//       jasmine.objectContaining({
+//         order_id: '1',
+//       })
+//     );
+//   });
+// //clean up test after creating data
+//   it('delete method should erase the user', async () => {
+//     userModel.delete(1);
+//     const result = await userModel.index();
+//     expect(result).toEqual([]);
+//   });
+//    it('delete method should erase the product', async () => {
+//     productModel.delete(1);
+//     const result = await productModel.index();
+//     expect(result).toEqual([]);
+//   });
+// });
+// describe('Testing EndPoints', () => {
+//   beforeAll(async () => {
+//     await userModel.create({
+//       username: 'tester',
+//       firstname: 'Test',
+//       lastname: 'User',
+//       password: 'test123',
+//     });
+//     await productModel.create({
+//       name: 'Catan',
+//       price: 40,
+//     });
+//   });
+//   it('Check if server runs with a 200 status', async () => {
+//     const response = await request.get('/');
+//     expect(response.status).toBe(200);
+//   });
+//   it('Test "create_order" should return a created order', async () => {
+//     const response = await request.post('/orders').send({
+//       user_id: 1,
+//       status: 'active',
+//     });
+//     expect(response.status).toBe(200);
+//   });
+//   it('Test "add_order" should return a created order', async () => {
+//     const response = await request.post('/orders/1/products').send({
+//       quantity: 2,
+//       order_id: 1,
+//       product_id: 1,
+//     });
+//     expect(response.status).toBe(200);
+//   });
+//   it('delete method should erase the correct user', async () => {
+//     userModel.delete(1);
+//     const result = await userModel.index();
+//     expect(result).toEqual([]);
+//   });
+//    it('delete method should erase the product', async () => {
+//     productModel.delete(1);
+//     const result = await productModel.index();
+//     expect(result).toEqual([]);
+//   });
+// });

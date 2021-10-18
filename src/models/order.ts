@@ -22,9 +22,9 @@ export class orderStore {
 
       const result = await conn.query(sql, [o.user_id, o.status]);
       const new_order = result.rows[0];
-      conn.release();
 
       return new_order;
+      conn.release();
     } catch (err) {
       console.log(err);
       throw new Error(`could not create order ${err}`);

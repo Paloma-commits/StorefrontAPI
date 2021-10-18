@@ -6,11 +6,12 @@
   "scripts": {
     "start": "ts-node src/server.ts",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
-    "test": "npm run build && ENV=test && db-migrate up -c 4 --env test && jasmine && db-migrate down -c 4 --env test && db-migrate --env test reset",
+    "test": "npm run build && db-migrate down -c 4 --env test && db-migrate up -c 4 --env test && npm run test2 && db-migrate down -c 4 --env test",
     "tsc": "tsc",
     "prettier": "prettier --config .prettierrc.json 'src/**/*.ts' --write",
     "migrate": "db-migrate --env dev up",
-    "build": "npx tsc"
+    "build": "npx tsc",
+    "test2": "jasmine"
   },
   "author": "Udacity",
   "license": "ISC",

@@ -61,5 +61,21 @@ class productStore {
             }
         });
     }
+    delete(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const sql = 'DELETE FROM products WHERE id=($1)';
+                // @ts-ignore
+                const conn = yield database_1.default.connect();
+                const result = yield conn.query(sql, [id]);
+                const prod = result.rows[0];
+                return prod;
+                conn.release();
+            }
+            catch (err) {
+                throw new Error(`Could not delete product ${id}. Error: ${err}`);
+            }
+        });
+    }
 }
 exports.productStore = productStore;

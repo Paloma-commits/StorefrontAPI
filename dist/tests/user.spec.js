@@ -18,7 +18,6 @@ const server_1 = __importDefault(require("../server"));
 const request = (0, supertest_1.default)(server_1.default);
 const store = new user_1.userStore();
 //const request = supertest(app);
-let userToken = '';
 describe('User Model', () => {
     it('should have an index method', () => {
         expect(store.index).toBeDefined();
@@ -29,8 +28,11 @@ describe('User Model', () => {
     it('should have a create method', () => {
         expect(store.create).toBeDefined();
     });
+    it('should have an erase method', () => {
+        expect(store.delete).toBeDefined();
+    });
 });
-describe('User Model create method', () => {
+describe('User Model methods', () => {
     it('create method should add a user', () => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield store.create({
             username: 'palo',
@@ -38,60 +40,34 @@ describe('User Model create method', () => {
             lastname: 'laso',
             password: 'password123',
         });
-        expect(result).toEqual(jasmine.objectContaining({
-            //id: 1,
-            username: 'palo',
-            firstname: 'paloma',
-            lastname: 'laso',
-            //password: 'password123',
-        }));
-    }));
-});
-describe('User model methods', () => {
-    beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
-        yield store.create({
-            username: 'palo',
-            firstname: 'paloma',
-            lastname: 'laso',
-            password: 'children',
-        });
+        expect(result).toBeTruthy;
     }));
     it('index method should return a list of existing users', () => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield store.index();
-        expect(result).toEqual(jasmine.objectContaining([{
+        expect(result[0]).toEqual(jasmine.objectContaining([
+            {
                 firstname: 'paloma',
                 lastname: 'laso',
-            }]));
+            },
+        ]));
     }));
     it('show method should return the correct user', () => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield store.show(1);
         expect(result).toEqual(jasmine.objectContaining({
-            //id: 1,
-            username: 'tester',
-            firstname: 'Test',
-            lastname: 'User',
-        }));
-    }));
-});
-describe('User Test Endpoints', () => {
-    beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
-        yield store.create({
             username: 'palo',
             firstname: 'paloma',
             lastname: 'laso',
-            password: 'password123',
-        });
+        }));
     }));
+    it('delete method should erase the correct user', () => __awaiter(void 0, void 0, void 0, function* () {
+        store.delete(1);
+        const result = yield store.index();
+        expect(result).toEqual([]);
+    }));
+});
+describe('User Test Endpoints', () => {
     it('Check if server runs, should return 200 status', () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield request.get('/');
-        expect(response.status).toBe(200);
-    }));
-    it('Test Index returns array of users', () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request.get('/users');
-        expect(response.status).toBe(200);
-    }));
-    it('Test Show returns specified user', () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request.get('/users/1');
         expect(response.status).toBe(200);
     }));
     it('Test Create should create a new user', () => __awaiter(void 0, void 0, void 0, function* () {
@@ -102,5 +78,18 @@ describe('User Test Endpoints', () => {
             password: 'password123',
         });
         expect(response.status).toBe(200);
+    }));
+    it('Test Index returns array of users', () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield request.get('/users');
+        expect(response.status).toBe(200);
+    }));
+    it('Test Show returns specified user', () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield request.get('/users/1');
+        expect(response.status).toBe(200);
+    }));
+    it('delete method should erase the correct user and return empty array', () => __awaiter(void 0, void 0, void 0, function* () {
+        store.delete(1);
+        const result = yield store.index();
+        expect(result).toEqual([]);
     }));
 });

@@ -75,10 +75,15 @@ const authenticate = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.json({ error });
     }
 });
+const erase = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const deleted = yield user_store.delete(req.body.id);
+    res.json(deleted);
+});
 const user_routes = (app) => {
-    app.get('/users', index),
-        app.get('/users/:id', show),
-        app.post('/users/', create);
+    app.get('/users', index);
+    app.get('/users/:id', show);
+    app.post('/users/', create);
     app.get('/users/authenticate/:id', authenticate);
+    app.delete('/users/:id', erase);
 };
 exports.default = user_routes;
