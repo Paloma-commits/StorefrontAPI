@@ -42,7 +42,7 @@ const create = async (req: Request, res: Response) => {
 
 const erase = async (req: Request, res: Response) => {
   const deleted = await store.delete(req.body.id);
-  res.json(deleted);
+  res.json({ deleted });
 };
 //here go all the routes with the different functions that products has in the model
 
@@ -50,7 +50,7 @@ const product_routes = (app: express.Application) => {
   app.get('/products', index);
   app.get('/products/:id', show);
   app.post('/products', verifyUser, create);
-  app.delete('/products/:id', erase);
+  app.delete('/products', erase);
 };
 
 export default product_routes;

@@ -52,13 +52,13 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const erase = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const deleted = yield store.delete(req.body.id);
-    res.json(deleted);
+    res.json({ deleted });
 });
 //here go all the routes with the different functions that products has in the model
 const product_routes = (app) => {
     app.get('/products', index);
     app.get('/products/:id', show);
     app.post('/products', verifyUser_1.default, create);
-    app.delete('/products/:id', erase);
+    app.delete('/products', erase);
 };
 exports.default = product_routes;
