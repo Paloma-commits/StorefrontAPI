@@ -1,9 +1,8 @@
-import { Order, orderStore } from '../models/order';
-import { User, userStore } from '../models/user';
-import { Product, productStore } from '../models/product';
+import { orderStore } from '../models/order';
+import { userStore } from '../models/user';
+import { productStore } from '../models/product';
 import supertest from 'supertest';
 import app from '../server';
-import client from '../database';
 const request = supertest(app);
 
 const orderModel = new orderStore();
@@ -25,9 +24,9 @@ describe('Order Model', () => {
 describe('Test Methods returning values are correct ', () => {
   beforeAll(async () => {
     await userModel.create({
-      username: 'tester',
-      firstname: 'Test',
-      lastname: 'User',
+      username: 'palo',
+      firstname: 'paloma',
+      lastname: 'laso',
       password: 'test123',
     });
 
@@ -35,12 +34,6 @@ describe('Test Methods returning values are correct ', () => {
       name: 'Catan',
       price: 40,
     });
-
-    // await orderModel.create({
-    //   //id:1,
-    //   user_id: 1,
-    //   status: 'active',
-    // });
   });
 
   it('Create method should return an order', async () => {
@@ -66,24 +59,10 @@ describe('Test Methods returning values are correct ', () => {
     expect(result).toEqual(
       jasmine.objectContaining({
         quantity: 2,
-        order_id: 1,
-        product_id: 1,
+        order_id: '1',
+        product_id: '1',
       })
     );
-  });
-  //clean up test after creating data
-  it('delete method should erase the user', async () => {
-    userModel.delete(1);
-    const result = await userModel.index();
-
-    expect(result).toEqual([]);
-  });
-
-  it('delete method should erase the product', async () => {
-    productModel.delete(1);
-    const result = await productModel.index();
-
-    expect(result).toEqual([]);
   });
 });
 
@@ -93,12 +72,12 @@ describe('Testing EndPoints', () => {
     expect(response.status).toBe(200);
   });
 
-  it('Test "create_order" should return a created order', async () => {
+  it('Test "create_order" should not return a created order if user not verified', async () => {
     const response = await request.post('/orders').send({
       user_id: 1,
       status: 'active',
     });
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(401);
   });
 
   it('Test "add_order" should return a created order', async () => {
@@ -108,20 +87,5 @@ describe('Testing EndPoints', () => {
       product_id: 1,
     });
     expect(response.status).toBe(200);
-  });
-
-  //clean up after tests are done
-  it('delete method should erase the correct user', async () => {
-    userModel.delete(1);
-    const result = await userModel.index();
-
-    expect(result).toEqual([]);
-  });
-
-  it('delete method should erase the product', async () => {
-    productModel.delete(1);
-    const result = await productModel.index();
-
-    expect(result).toEqual([]);
   });
 });

@@ -59,11 +59,6 @@ describe('User Model methods', () => {
             lastname: 'laso',
         }));
     }));
-    // it('delete method should erase the correct user', async () => {
-    //   store.delete(1);
-    //   const result = await store.index();
-    //   expect(result).toEqual([]);
-    // });
 });
 describe('User Test Endpoints', () => {
     it('Check if server runs, should return 200 status', () => __awaiter(void 0, void 0, void 0, function* () {
@@ -87,9 +82,9 @@ describe('User Test Endpoints', () => {
         const response = yield request.get('/users/1');
         expect(response.status).toBe(200);
     }));
-    it('delete method should erase the correct user and return empty array', () => __awaiter(void 0, void 0, void 0, function* () {
-        store.delete(1);
-        const result = yield store.index();
-        expect(result).toEqual([]);
-    }));
+    // it('delete method should erase the correct user and return empty array', async () => {
+    //   store.delete(1);
+    //   const result = await store.index();
+    //   expect(result).toEqual([]);
+    // });
 });

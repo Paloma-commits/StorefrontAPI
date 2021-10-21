@@ -34,20 +34,15 @@ describe('Order Model', () => {
 describe('Test Methods returning values are correct ', () => {
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
         yield userModel.create({
-            username: 'tester',
-            firstname: 'Test',
-            lastname: 'User',
+            username: 'palo',
+            firstname: 'paloma',
+            lastname: 'laso',
             password: 'test123',
         });
         yield productModel.create({
             name: 'Catan',
             price: 40,
         });
-        // await orderModel.create({
-        //   //id:1,
-        //   user_id: 1,
-        //   status: 'active',
-        // });
     }));
     it('Create method should return an order', () => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield orderModel.create({
@@ -56,7 +51,7 @@ describe('Test Methods returning values are correct ', () => {
         });
         expect(result).toEqual(jasmine.objectContaining({
             user_id: '1',
-            status: 'active'
+            status: 'active',
         }));
     }));
     it('Add order', () => __awaiter(void 0, void 0, void 0, function* () {
@@ -67,20 +62,9 @@ describe('Test Methods returning values are correct ', () => {
         });
         expect(result).toEqual(jasmine.objectContaining({
             quantity: 2,
-            order_id: 1,
-            product_id: 1,
+            order_id: '1',
+            product_id: '1',
         }));
-    }));
-    //clean up test after creating data
-    it('delete method should erase the user', () => __awaiter(void 0, void 0, void 0, function* () {
-        userModel.delete(1);
-        const result = yield userModel.index();
-        expect(result).toEqual([]);
-    }));
-    it('delete method should erase the product', () => __awaiter(void 0, void 0, void 0, function* () {
-        productModel.delete(1);
-        const result = yield productModel.index();
-        expect(result).toEqual([]);
     }));
 });
 describe('Testing EndPoints', () => {
@@ -88,12 +72,12 @@ describe('Testing EndPoints', () => {
         const response = yield request.get('/');
         expect(response.status).toBe(200);
     }));
-    it('Test "create_order" should return a created order', () => __awaiter(void 0, void 0, void 0, function* () {
+    it('Test "create_order" should not return a created order if user not verified', () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield request.post('/orders').send({
             user_id: 1,
             status: 'active',
         });
-        expect(response.status).toBe(200);
+        expect(response.status).toBe(401);
     }));
     it('Test "add_order" should return a created order', () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield request.post('/orders/1/products').send({
@@ -102,16 +86,5 @@ describe('Testing EndPoints', () => {
             product_id: 1,
         });
         expect(response.status).toBe(200);
-    }));
-    //clean up after tests are done
-    it('delete method should erase the correct user', () => __awaiter(void 0, void 0, void 0, function* () {
-        userModel.delete(1);
-        const result = yield userModel.index();
-        expect(result).toEqual([]);
-    }));
-    it('delete method should erase the product', () => __awaiter(void 0, void 0, void 0, function* () {
-        productModel.delete(1);
-        const result = yield productModel.index();
-        expect(result).toEqual([]);
     }));
 });

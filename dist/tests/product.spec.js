@@ -78,9 +78,9 @@ describe('Products Test Endpoints', () => {
         const response = yield request.get('/products/1');
         expect(response.status).toBe(200);
     }));
-    it('delete method should erase the correct product', () => __awaiter(void 0, void 0, void 0, function* () {
-        store.delete(1);
-        const result = yield store.index();
-        expect(result).toEqual([]);
-    }));
+    // it('delete method should erase the correct product', async () => {
+    //   store.delete(1);
+    //   const result = await store.index();
+    //   expect(result).toEqual([]);
+    // });
 });

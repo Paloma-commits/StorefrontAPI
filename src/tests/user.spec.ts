@@ -57,13 +57,6 @@ describe('User Model methods', () => {
       })
     );
   });
-
-  // it('delete method should erase the correct user', async () => {
-  //   store.delete(1);
-  //   const result = await store.index();
-
-  //   expect(result).toEqual([]);
-  // });
 });
 
 describe('User Test Endpoints', () => {
@@ -90,12 +83,5 @@ describe('User Test Endpoints', () => {
   it('Test Show returns specified user', async () => {
     const response = await request.get('/users/1');
     expect(response.status).toBe(200);
-  });
-
-  it('delete method should erase the correct user and return empty array', async () => {
-    store.delete(1);
-    const result = await store.index();
-
-    expect(result).toEqual([]);
   });
 });
